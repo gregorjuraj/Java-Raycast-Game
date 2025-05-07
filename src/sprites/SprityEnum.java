@@ -1,72 +1,38 @@
 package sprites;
 
-import engine.tools.Tools;
-
 public enum SprityEnum {
-    BARREL("barrel.png", false, false),
-    STLP("stlp.png", false, false ),
-    SEBO("sebo.jpg", false, false),
-    KOSTLIVEC("kostlivec.png", false, false),
+    BARREL("barrel", SprityDefinition.STATIC,   false),
+    STLP("stlp", SprityDefinition.STATIC,   false),
+    SEBO("sebo", SprityDefinition.STATIC,   true),
+    KOSTLIVEC("kostlivec", SprityDefinition.STATIC,   false),
+    STRASIDLO("strasidlo", SprityDefinition.STATIC,   true),
 
-    SOLDIER("soldier", false, true);
+    KNIGHT("knight", SprityDefinition.ANIMATED,   false),
+    EXPLOZIA("explozia", SprityDefinition.ANIMATED,   false),
 
-    private String nazovSuboru;
-    private int[] textureData;
-    private int[] textureDataBack;
-    private int[] textureDataLeft;
-    private int[] textureDataRight;
+    SOLDIER("soldier", SprityDefinition.ENTITY,   false);
 
-    SprityEnum(String nazovSuboru, Boolean animated, Boolean entity ) {
+
+
+    private final String nazovSuboru;
+    private final SprityDefinition typ;
+    private final boolean resized;
+
+    SprityEnum(String nazovSuboru, SprityDefinition typ, boolean resized) {
         this.nazovSuboru = nazovSuboru;
-
-        if (!entity) {
-            this.textureData = this.loadTextury(entity, animated, 0);
-        } else {
-            this.textureData = this.loadTextury(entity, animated, 1);
-            this.textureDataBack = this.loadTextury(entity, animated, 2);
-            this.textureDataRight = this.loadTextury(entity, animated, 3);
-            this.textureDataLeft = this.loadTextury(entity, animated, 4);
-        }
-
+        this.typ = typ;
+        this.resized = resized;
     }
 
-    private int[] loadTextury(boolean entity, boolean animated, int phase) {
-        if (!entity) {
-            if (!animated) {
-                return Tools.loadImageTexture("src/sprites/noRotation/textures/" + this.nazovSuboru);
-            } else {
-                return Tools.loadImageTexture("src/sprites/noRotation/textures/" + this.nazovSuboru);
-            }
-        } else {
-            switch (phase) {
-                case 1:
-                    return Tools.loadImageTexture("src/sprites/rotation/textures/" + this.nazovSuboru + "Front.png");
-                case 2:
-                    return Tools.loadImageTexture("src/sprites/rotation/textures/" + this.nazovSuboru + "Back.png");
-                case 3:
-                    return Tools.loadImageTexture("src/sprites/rotation/textures/" + this.nazovSuboru + "Right.png");
-                case 4:
-                    return Tools.loadImageTexture("src/sprites/rotation/textures/" + this.nazovSuboru + "Left.png");
-                default:
-                    System.out.println("test");
-                    return null;
-            }
-        }
+    public String getNazovSuboru() {
+        return this.nazovSuboru;
     }
 
-    public int[] getTextura() {
-        return this.textureData;
+    public SprityDefinition getTyp() {
+        return this.typ;
     }
 
-    public int[] getTextureBack() {
-        return this.textureDataBack;
-    }
-
-    public int[] getTextureLeft() {
-        return this.textureDataLeft;
-    }
-
-    public int[] getTextureRight() {
-        return this.textureDataRight;
+    public boolean isResized() {
+        return this.resized;
     }
 }

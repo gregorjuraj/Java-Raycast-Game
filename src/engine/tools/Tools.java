@@ -1,9 +1,11 @@
 package engine.tools;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import main.HernyPanel;
 
@@ -22,28 +24,24 @@ public class Tools {
         return 0;
     }
 
-    public static int[] loadImageTexture(String filePath) {
+    public static int[] loadImageTexture(String filePath, int x, int y, boolean resize) {
         int[] texture = new int[64 * 64];
         try {
             BufferedImage image = ImageIO.read(new File(filePath));
-            int width = image.getWidth();
-            int height = image.getHeight();
+            boolean outOfBounds = x < 0 || y < 0 || x + 64 > image.getWidth() || y + 64 > image.getHeight();
 
-            // ak nieje 64x64 tak zmenim velkost
-            if (width != 64 || height != 64) {
+            if (resize || outOfBounds) {
+                if (outOfBounds && !resize) {
+                    throw new IllegalArgumentException("Neplatne coords");
+                }
                 BufferedImage resized = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
-                resized.getGraphics().drawImage(image.getScaledInstance(64, 64, java.awt.Image.SCALE_DEFAULT), 0, 0, null);
-                resized.getRGB(0, 0, 64, 64, texture, 0, 64);
-            } else {
-                image.getRGB(0, 0, 64, 64, texture, 0, 64);
+                resized.getGraphics().drawImage(image.getScaledInstance(64, 64, Image.SCALE_DEFAULT), 0, 0, null);
+                image = resized;
             }
-        } catch (IOException e) {
-            System.err.println("Failed to load image: " + e.getMessage());
-            System.out.println(filePath);
-            // na debug, keby sa nenacita - nastavim cervenu farbu na stenu
-            for (int i = 0; i < texture.length; i++) {
-                texture[i] = 0xFF0000FF;
-            }
+            image.getRGB(x, y, 64, 64, texture, 0, 64);
+        } catch (IOException | IllegalArgumentException e) {
+            System.err.println("Nepodarilo sa nacitat obrazok: " + filePath + ": " + e.getMessage());
+            Arrays.fill(texture, 0xFF0000FF); // Blue
         }
         return texture;
     }

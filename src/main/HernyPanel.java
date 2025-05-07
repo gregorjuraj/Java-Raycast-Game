@@ -24,8 +24,8 @@ public class HernyPanel extends JPanel implements Runnable {
     private Kreslenie kreslenie;
     private Tik AI;
 
-    public static final double FPS = 60; // Frames per second
-    public static final double TPS = 20; // Ticks per second for logic
+    public static final double FPS = 60;
+    public static final double TPS = 10;
 
 
 
@@ -64,8 +64,8 @@ public class HernyPanel extends JPanel implements Runnable {
     @Override
     public void run() {
 
-        double drawInterval =  1000000000 / FPS; ///1000000000 nanosec. = 1 sec. cca 16.67ms pre snimok
-        double tickInterval = 1000000000 / TPS; // ~50 ms per tick
+        double drawInterval =  1000000000 / FPS; //1000000000 nanosec. = 1 sec. cca 16.67ms pre snimok
+        double tickInterval = 1000000000 / TPS;  //cca 50 ms  = 1 tik
         double delta = 0; // For rendering
         double tickDelta = 0; // For logic
         long lastTime = System.nanoTime();
@@ -112,6 +112,7 @@ public class HernyPanel extends JPanel implements Runnable {
             if (timer >= 1000000000) {
                 System.out.println("FPS: " + drawCount);
                 drawCount = 0;
+                tickCount = 0;
                 timer = 0;
             }
 
@@ -133,7 +134,7 @@ public class HernyPanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D)g;
 
         this.kreslenie.draw(g2);
-        this.hrac.draw(g2);
+        //this.hrac.draw(g2);
         //this.levelOne.draw(g2);
 
         //g2.dispose();

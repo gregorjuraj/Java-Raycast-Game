@@ -1,12 +1,12 @@
-package sprites.rotation;
+package sprites.sprites.entities;
 
 import engine.tools.Tools;
 import entity.Hrac;
 import levely.levelData.Level;
 import sprites.SprityEnum;
-import sprites.spriteData.Sprite;
+import sprites.spriteData.EntitySprite;
 
-public class Soldier extends Sprite {
+public class Soldier extends EntitySprite {
     private double viewAngle;
     private State state;
     private double rychlost;
@@ -26,18 +26,18 @@ public class Soldier extends Sprite {
         this.patrolDirection = 1;
     }
 
-    public int[] updateTexture(Hrac hrac) {
+    public void updateTexture(Hrac hrac) {
         double delta = this.viewAngle - hrac.getHracAngle();
         delta += Tools.korekciaUhla(delta);
         delta = Math.toDegrees(delta);
         if (delta > 315 || delta <= 45) {
-            return this.getType().getTextura();
+            this.setTexture(super.getEntityTextures().get("front").getFirst());
         } else if (delta > 45 && delta <= 135) {
-            return this.getType().getTextureLeft();
+            this.setTexture(super.getEntityTextures().get("left").getFirst());
         } else if (delta > 135 && delta <= 225) {
-            return this.getType().getTextureBack();
+            this.setTexture(super.getEntityTextures().get("back").getFirst());
         } else {
-            return this.getType().getTextureRight();
+            this.setTexture(super.getEntityTextures().get("right").getFirst());
         }
     }
 

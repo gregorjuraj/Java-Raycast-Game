@@ -1,6 +1,6 @@
 package engine;
 
-import sprites.rotation.Soldier;
+import sprites.sprites.entities.Soldier;
 import sprites.spriteData.Sprite;
 import sprites.spriteData.SpriteData;
 import textures.TexturyEnum;
@@ -50,7 +50,7 @@ public class Kreslenie {
 
         g2.drawImage(screen, 0, 0, 1280, 720, null);
 
-        boolean test = true;
+        boolean test = false;
         if (test) {
             for (int i = 0; i < 320; i++) {
                 if (i == 160) {
@@ -225,16 +225,16 @@ public class Kreslenie {
                     int texY = (y - (screenY - spriteHeight / 2)) * 64 / spriteHeight;
                     if (texX >= 0 && texX < 64 && texY >= 0 && texY < 64) {
                         int index = y * this.sirka + x;
-                        int color = sprite.getType().getTextura()[texY * 64 + texX];
-
-                        //specialne pre soldier (rotatable sprity)
-                        if (sprite instanceof Soldier) {
-                            color = ((Soldier)sprite).updateTexture(this.hrac)[texY * 64 + texX];
+                        int color = sprite.getTexture()[texY * 64 + texX];
+                        // vynimka pre tieto dve farby ktore nebudem vykreslovat
+                        if ((color != 0xFF980088)) {
+                            pixels[index] = this.darkenColor(color, shadingFactor);
                         }
-
+                        /*
                         if ((color != 0xFF000000) && (color != 0xFF980088)) {
                             pixels[index] = this.darkenColor(color, shadingFactor);
                         }
+                         */
                     }
                 }
             }

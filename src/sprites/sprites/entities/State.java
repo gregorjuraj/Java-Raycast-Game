@@ -1,4 +1,4 @@
-package sprites.rotation;
+package sprites.sprites.entities;
 
 public enum State {
     STAND,

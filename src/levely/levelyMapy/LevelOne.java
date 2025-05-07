@@ -1,9 +1,9 @@
 package levely.levelyMapy;
 
 import levely.levelData.Level;
-import sprites.noRotation.Barrel;
-import sprites.noRotation.Kostlivec;
-import sprites.noRotation.Sebo;
+import sprites.sprites.staticSprites.Barrel;
+import sprites.sprites.staticSprites.Kostlivec;
+import sprites.sprites.staticSprites.Sebo;
 
 public class LevelOne extends Level {
 
