@@ -1,10 +1,14 @@
 package engine;
 
 import levely.levelData.Level;
-import textures.TexturyEnum;
+import sprites.TexturyEnum;
 import entity.Hrac;
 
 import static engine.tools.Tools.PI;
+
+/**
+ * Trieda pre výpočty lúčov (ray casting) v 2D hernom engine, určuje kolízie so stenami a dverami.
+ */
 
 public class Calc {
 
@@ -23,18 +27,25 @@ public class Calc {
     private int finalDlzkaY;
     private double finalUhol;
     private boolean horizontalHit;
-    private TexturyEnum finalTextura;
+    private TexturyEnum finalTextura; //textura steny na ktoru luc narazil
 
     private boolean dvereHit;
-    private int drawStep;
+    private int drawStep; //Krok kreslenia pre dvere (posun dverí)
     private Door hitDoor;
 
-    public void finalCiara(Hrac hrac, Level levelOne, double angle) {
+    /**
+     * Vypočíta výsledný lúč na základe pozície hráča, levelu a uhla.
+     *
+     * @param hrac Hráč, z ktorého pozície sa lúč vypočítava
+     * @param level Level, v ktorom sa lúč pohybuje
+     * @param angle Uhol lúča v radiánoch
+     */
+    public void finalCiara(Hrac hrac, Level level, double angle) {
         this.finalUhol = angle;
         this.dvereHit = false;
         this.hitDoor = null;
-        this.horizontalneCiary(hrac, levelOne, angle);
-        this.vertikalneCiary(hrac, levelOne, angle);
+        this.horizontalneCiary(hrac, level, angle);
+        this.vertikalneCiary(hrac, level, angle);
 
         if (this.horizontalneDlzka < this.vertikalneDlzka) {
             this.finalDlzkaX = this.horizontalneDlzkaX;
@@ -42,17 +53,24 @@ public class Calc {
             this.finalDlzka = this.horizontalneDlzka;
             this.horizontalHit = true;
             this.dvereHit = this.horizontalneDvereHit;
-            this.finalTextura = levelOne.getTexturaZMapy(this.finalDlzkaY / levelOne.getCellVelkost(), this.finalDlzkaX / levelOne.getCellVelkost(), 0);
+            this.finalTextura = level.getTexturaZMapy(this.finalDlzkaY / level.getCellVelkost(), this.finalDlzkaX / level.getCellVelkost(), 0);
         } else {
             this.finalDlzkaX = this.vertikalneDlzkaX;
             this.finalDlzkaY = this.vertikalneDlzkaY;
             this.finalDlzka = this.vertikalneDlzka;
             this.horizontalHit = false;
             this.dvereHit = this.vertikalneDvereHit;
-            this.finalTextura = levelOne.getTexturaZMapy(this.finalDlzkaY / levelOne.getCellVelkost(), this.finalDlzkaX / levelOne.getCellVelkost(), 1);
+            this.finalTextura = level.getTexturaZMapy(this.finalDlzkaY / level.getCellVelkost(), this.finalDlzkaX / level.getCellVelkost(), 1);
         }
     }
 
+    /**
+     * Vypočíta vertikálne lúče a ich kolízie so stenami alebo dverami.
+     *
+     * @param hrac Hráč, z ktorého pozície sa lúč vypočítava
+     * @param levelOne Level, v ktorom sa lúč pohybuje
+     * @param angle Uhol lúča v radiánoch
+     */
     private void vertikalneCiary(Hrac hrac, Level levelOne, double angle) {
         double aY = 1;
         double aX = 1;
@@ -165,6 +183,13 @@ public class Calc {
         }
     }
 
+    /**
+     * Vypočíta horizontálne lúče a ich kolízie so stenami alebo dverami.
+     *
+     * @param hrac Hráč, z ktorého pozície sa lúč vypočítava
+     * @param levelOne Level, v ktorom sa lúč pohybuje
+     * @param angle Uhol lúča v radiánoch
+     */
     private void horizontalneCiary(Hrac hrac, Level levelOne, double angle) {
         double aY = 1;
         double aX = 1;

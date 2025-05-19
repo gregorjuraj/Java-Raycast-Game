@@ -1,5 +1,9 @@
 package levely.levelData;
 
+/**
+ * Trieda reprezentujúca údaje o stenách v hernej mape.
+ * Uchováva informácie o textúrach horizontálnej a vertikálnej steny a súradniciach políčka.
+ */
 public class WallData {
     private int horizontalnaStenaTextura;
     private int vertikalnaStenaTextura;
@@ -38,5 +42,3 @@ public class WallData {
         this.y = y;
     }
 }
-
-

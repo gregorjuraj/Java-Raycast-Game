@@ -2,15 +2,24 @@ package engine;
 
 import engine.tools.Tools;
 
+/**
+ * Trieda reprezentujúca dvere v hernom engine, spravuje ich pozíciu, animáciu a stav.
+ */
 public class Door {
     private int x;
     private int y;
     private int step;
-    private int state;
-    private int waitStep;
+    private int state; //Stav dverí (0 - otváranie, 1 - zatváranie, 2 - otvorené)
+    private int waitStep; //pocitadlo cakania
     private boolean isAnimacia;
     private boolean open;
 
+    /**
+     * Konštruktor pre vytvorenie dverí na zadanej pozícii.
+     *
+     * @param x X-ová súradnica dverí
+     * @param y Y-ová súradnica dverí
+     */
     public Door(int x, int y) {
         this.x = x;
         this.y = y;
@@ -25,6 +34,9 @@ public class Door {
         return this.y;
     }
 
+    /**
+     * Spravuje animáciu dverí (otváranie, zatváranie, čakanie).
+     */
     public void animacia() {
         if (this.state == 0) {
             this.step--;
@@ -52,6 +64,9 @@ public class Door {
         }
     }
 
+    /**
+     * Spustí animáciu otvárania dverí.
+     */
     public void startAnimacia() {
         this.isAnimacia = true;
         this.state = 0;  // 0 - otvaranie, 1 - zatvaranie, 2 - otvorene

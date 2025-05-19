@@ -1,41 +1,57 @@
 package levely.levelData;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
+/**
+ * Trieda na načítanie dát herného levelu zo súboru.
+ * Parsuje mapu levelu a inicializuje údaje o stenách.
+ */
 public class LoadLevel {
     private int pocetRiadok;
     private int pocetSlpcov;
     private WallData[][] mapa;
 
+    /**
+     * Konštruktor pre načítanie levelu.
+     * Načíta mapu zo súboru, inicializuje rozmery mapy a vyplní pole údajov o stenách.
+     * @param mapName Názov súboru s mapou levelu
+     */
     public LoadLevel(String mapName) {
         try {
-            File init = new File("src/levely/levelyMapyLayout/" + mapName);
-            Scanner initReader = new Scanner(init);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("levelyMapyLayout/" + mapName);
+            if (inputStream == null) {
+                throw new IllegalStateException("Súbor nenájdený: levelyMapyLayout/" + mapName);
+            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             int riadky = 0;
             int stlpce = 0;
-
-            while (initReader.hasNextLine()) {
-                String data = initReader.nextLine();
+            String line = "";
+            // vypocet poctu riadkov a stlpcov
+            while ((line = reader.readLine()) != null) {
                 riadky++;
                 if (riadky == 1) {
-                    stlpce = data.split(" ").length;
+                    stlpce = line.split(" ").length;
                 }
             }
-            initReader.close();
+            reader.close();
             this.pocetRiadok = riadky;
             this.pocetSlpcov = stlpce;
 
             this.mapa = new WallData[riadky][stlpce];
 
-            File load = new File("src/levely/levelyMapyLayout/" + mapName);
-            Scanner mapaReader = new Scanner(load);
+            // naplnenie udajov
+            inputStream = getClass().getClassLoader().getResourceAsStream("levelyMapyLayout/" + mapName);
+            if (inputStream == null) {
+                throw new IllegalStateException("Súbor nenájdený: levelyMapyLayout/" + mapName);
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
 
             int m = 0;
-            while (mapaReader.hasNextLine()) {
-                String data = mapaReader.nextLine();
-                String[] riadok = data.split(" ");
+            while ((line = reader.readLine()) != null) {
+                String[] riadok = line.split(" ");
                 int n = 0;
                 for (String stena : riadok) {
                     this.mapa[m][n] = new WallData();
@@ -48,13 +64,13 @@ public class LoadLevel {
                 }
                 m++;
             }
-            mapaReader.close();
+            reader.close();
 
-        } catch (FileNotFoundException e) {
-            System.out.println("subor sa nenasiel");
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new IllegalStateException("Chyba pri načítavaní súboru: levelyMapyLayout/" + mapName, e);
         }
     }
+
 
     public int getPocetRiadok() {
         return this.pocetRiadok;
