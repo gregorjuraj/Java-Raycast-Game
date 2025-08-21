@@ -1,6 +1,7 @@
 package sprites.spriteData;
 
 import engine.tools.Tools;
+
 import sprites.SprityDefinition;
 import sprites.SprityEnum;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
  * Trieda EntitySprite rozširuje triedu Sprite a spravuje textúry pre entitu s rôznymi animáciami.
  * Uchováva sekvencie textúr pre rôzne smery a stavy dannej entity.
  */
-public class EntitySprite extends Sprite {
+public abstract class EntitySprite extends Sprite {
     private HashMap<String, ArrayList<int[]>> entityTextures;
 
     /**
@@ -69,7 +70,7 @@ public class EntitySprite extends Sprite {
                         break;
                 }
             }
-            this.setTexture(this.entityTextures.get("front").getFirst());
+            super.setTexture(this.entityTextures.get("front").getFirst());
         }
     }
 

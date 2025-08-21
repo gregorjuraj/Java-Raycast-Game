@@ -1,6 +1,7 @@
 package sprites.sprites.staticSprites;
 
 import entity.Hrac;
+import levely.levelData.Level;
 import sprites.SprityEnum;
 import sprites.spriteData.StaticSprite;
 
@@ -27,6 +28,16 @@ public class Bullet extends StaticSprite {
         this.dolet = 0;
     }
 
+    @Override
+    public void update(Level level, Hrac hrac) {
+        super.update(level, hrac);
+        super.setX(super.getX() + 50 * Math.cos(this.angle));
+        super.setY(super.getY() - 50 * Math.sin(this.angle));
+        if (this.getDolet()) {
+            super.beRemoved();
+        }
+    }
+
     /**
      * Vracia uhol strely.
      *
@@ -42,7 +53,7 @@ public class Bullet extends StaticSprite {
      *
      * @return true, ak strela dosiahla maximálny dolet (5 aktualizácií), inak false
      */
-    public boolean getDolet() {
+    private boolean getDolet() {
         if (this.dolet != 5) {
             this.dolet++;
             return false;

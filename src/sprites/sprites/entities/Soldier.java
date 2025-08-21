@@ -35,6 +35,12 @@ public class Soldier extends EntitySprite {
         this.setDefaultValues();
     }
 
+    @Override
+    public void update(Level level, Hrac hrac) {
+        this.updateTexture(hrac);
+        this.updatePhase(level, hrac);
+    }
+
     /**
      * Nastavuje predvolené hodnoty pre atribúty vojaka, ako uhol pohľadu, stav, rýchlosť a zdravie.
      */
@@ -52,7 +58,7 @@ public class Soldier extends EntitySprite {
      *
      * @param hrac objekt hráča, použitý na výpočet uhla
      */
-    public void updateTexture(Hrac hrac) {
+    private void updateTexture(Hrac hrac) {
         double delta = this.viewAngle - hrac.getHracAngle();
         delta += Tools.korekciaUhla(delta);
         delta = Math.toDegrees(delta);
@@ -106,7 +112,7 @@ public class Soldier extends EntitySprite {
      * @param level objekt levelu, použitý na kontrolu kolízií
      * @param hrac objekt hráča, použitý na výpočet vzdialenosti a uhla
      */
-    public void updatePhase(Level level, Hrac hrac) {
+    private void updatePhase(Level level, Hrac hrac) {
         if (this.hp == 0) {
             this.state = State.DEAD;
         }

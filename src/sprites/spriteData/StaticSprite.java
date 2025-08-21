@@ -1,10 +1,11 @@
 package sprites.spriteData;
 
 import engine.tools.Tools;
-import sprites.IScore;
+import entity.Hrac;
+import levely.levelData.Level;
 import sprites.SprityEnum;
 
-public class StaticSprite extends Sprite implements IScore {
+public class StaticSprite extends Sprite {
 
     private final int score;
 
@@ -15,7 +16,13 @@ public class StaticSprite extends Sprite implements IScore {
     }
 
     @Override
-    public int kolkoScore() {
-        return this.score;
+    public void update(Level level, Hrac hrac) {
+        if (this.score > 0) {
+            if ( (hrac.getHracX() / 64 == (int)super.getX() / 64) && (hrac.getHracY() / 64 == (int)super.getY() / 64)) {
+                hrac.setScoreValue(this.score);
+                super.beRemoved();
+            }
+        }
     }
+
 }

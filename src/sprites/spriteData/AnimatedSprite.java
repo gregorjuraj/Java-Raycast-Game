@@ -1,6 +1,8 @@
 package sprites.spriteData;
 
 import engine.tools.Tools;
+import entity.Hrac;
+import levely.levelData.Level;
 import sprites.SprityEnum;
 import sprites.SprityDefinition;
 
@@ -48,7 +50,7 @@ public class AnimatedSprite extends Sprite {
             }
         }
         this.pocetSnimkovUpdate = 1;
-        this.setTexture(this.animSequence.get(1)); // inicializacia
+        super.setTexture(this.animSequence.get(1)); // inicializacia
     }
 
     /**
@@ -57,7 +59,7 @@ public class AnimatedSprite extends Sprite {
      *
      * @return aktuálne poradové číslo snímky
      */
-    public int updatePocetSnimkovUpdate() {
+    private int updatePocetSnimkovUpdate() {
         if (this.pocetSnimkovUpdate < this.pocetSnimkov) {
             this.pocetSnimkovUpdate++;
         } else {
@@ -66,7 +68,8 @@ public class AnimatedSprite extends Sprite {
         return this.pocetSnimkovUpdate;
     }
 
-    public HashMap<Integer, int[]> getAnimSequence() {
-        return this.animSequence;
+    @Override
+    public void update(Level level, Hrac hrac) {
+        this.setTexture(this.animSequence.get(this.updatePocetSnimkovUpdate()));
     }
 }

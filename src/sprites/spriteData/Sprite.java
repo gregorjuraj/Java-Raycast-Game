@@ -1,15 +1,19 @@
 package sprites.spriteData;
 
+import entity.Hrac;
+import levely.levelData.Level;
+
 /**
  * Trieda Sprite reprezentuje herný sprite s pozíciou, textúrou a údajmi o sprite.
  * Slúži na uchovávanie a manipuláciu s informáciami o sprite v hernom prostredí.
  */
-public class Sprite {
+public abstract class Sprite {
     //x, y v 2D mape
     private double x;
     private double y;
     private int[] texture;
     private SpriteData spriteData;
+    private boolean shouldRemove;
 
     /**
      * Konštruktor triedy Sprite.
@@ -21,6 +25,7 @@ public class Sprite {
     public Sprite(double x, double y) {
         this.x = x;
         this.y = y;
+        this.shouldRemove = false;
     }
 
     public double getX() {
@@ -54,6 +59,8 @@ public class Sprite {
         this.spriteData = new SpriteData(distance, angle, sprite);
     }
 
+    public abstract void update(Level level, Hrac hrac);
+
     /**
      * Nastavuje textúru spritu.
      *
@@ -65,5 +72,13 @@ public class Sprite {
 
     public int[] getTexture() {
         return this.texture;
+    }
+
+    public boolean isShouldRemove() {
+        return this.shouldRemove;
+    }
+
+    public void beRemoved() {
+        this.shouldRemove = true;
     }
 }
